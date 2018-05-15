@@ -1,5 +1,5 @@
 {
-  "name": "react-pull-refresh",
+  "name": "react-pullable",
   "version": "1.0.0",
   "description": "A customizable react component for pull to refresh support on touch devices.",
   "main": "lib/index.js",
@@ -26,7 +26,7 @@
   },
   "author": "Stelios Constantinides <sconstantinides@gmail.com>",
   "license": "MIT",
-  "repository": "https://github.com/sconstantinides/react-pull-refresh",
+  "repository": "https://github.com/sconstantinides/react-pullable",
   "keywords": [
     "react",
     "touch",

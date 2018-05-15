@@ -1,11 +1,11 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-class Refresh extends React.Component {
+class Pullable extends React.Component {
   constructor(props) {
     super(props);
 
-    this.className = props.className || 'pullRefresh';
+    this.className = props.className || 'pullable';
     this.spinnerSize = props.spinnerSize || 24;
     this.spinnerColor = props.spinnerColor || '#FFFFFF';
     this.spinSpeed = props.spinSpeed || 1200;
@@ -196,4 +196,4 @@ const rotate360 = keyframes`
   to { transform: rotate(360deg); }
 `;
 
-export default Refresh;
+export default Pullable;
