@@ -1,16 +1,14 @@
 # react-pull-refresh
 
-[![Travis][build-badge]][build]
-[![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
+A customizable react component for pull to refresh support on touch devices.
 
-Describe react-pull-refresh here.
+## Usage
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
-[build]: https://travis-ci.org/user/repo
+Set overscroll-behavior-y: contain; or overscroll-behavior-y: none; on <body>
 
-[npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
-[npm]: https://www.npmjs.org/package/npm-package
+More to come...
 
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
+## Credits
+
+Inspired by [BoxFactura's PulltoRefresh.js](https://www.boxfactura.com/pulltorefresh.js/)
+Built using [NWB](https://github.com/insin/nwb/blob/master/docs/guides/ReactComponents.md#developing-react-components-and-libraries-with-nwb)
