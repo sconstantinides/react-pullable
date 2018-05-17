@@ -2,7 +2,7 @@
 
 A customizable react component for pull to refresh on touch devices.
 
-[View the demo](https://sconstantinides.github.io/react-pullable/) (for touch devices)
+[View the demo](https://sconstantinides.github.io/react-pullable/)
 
 ## Usage
 
@@ -12,7 +12,7 @@ Import in your components with `import Pullable from 'react-pullable'`
 
 ### Component styles
 
-To prevent Chrome overscroll set `overscroll-behavior-y: contain;` or `overscroll-behavior-y: none;` on `<body>` ([learn more](https://developers.google.com/web/updates/2017/11/overscroll-behavior))
+To prevent Chrome overscroll set `overscroll-behavior-y: contain [or] none;` on `<body>` ([learn more](https://developers.google.com/web/updates/2017/11/overscroll-behavior)).
 
 ### Required props
 
