@@ -6,8 +6,12 @@ class Pullable extends React.Component {
     super(props);
 
     this.className = props.className || 'pullable';
+		this.centerSpinner = props.centerSpinner === false ? false : true;
+		this.fadeSpinner = props.fadeSpinner === false ? false : true;
+		this.rotateSpinner = props.rotateSpinner === false ? false : true;
     this.spinnerSize = props.spinnerSize || 24;
-    this.spinnerColor = props.spinnerColor || '#FFFFFF';
+		this.spinnerOffset = props.spinnerOffset || 0;
+    this.spinnerColor = props.spinnerColor || '#000000';
     this.spinSpeed = props.spinSpeed || 1200;
     this.popDuration = props.popDuration || 200;
     this.distThreshold = props.distThreshold || this.spinnerSize * 3;
@@ -110,27 +114,37 @@ class Pullable extends React.Component {
 
   render() {
     const status = this.state.status;
-    const percentPulled = this.distResisted / this.distThreshold;
+		const shouldEase = status === 'pullAborted' || status === 'refreshCompleted';
+		const shouldSpin = status === 'refreshing' || status === 'refreshCompleted';
+		const pctPulled = this.state.height / this.distThreshold;
 
     return (
       <React.Fragment>
         <Container
           className={this.className}
           height={this.state.height}
-          transition={status === 'pullAborted' || status === 'refreshCompleted'}
+					centerSpinner={this.centerSpinner}
           transitionDuration={this.transitionDuration}
           transitionEase={this.transitionEase}
+          shouldEase={shouldEase}
         >
           <Spinner
-            percentPulled={percentPulled}
+            pctPulled={pctPulled}
+						fadeSpinner={this.fadeSpinner}
+						rotateSpinner={this.rotateSpinner}
             spinnerSize={this.spinnerSize}
+            spinnerOffset={this.spinnerOffset}
+          	transitionDuration={this.transitionDuration}
+          	transitionEase={this.transitionEase}
+						shouldEase={shouldEase}
+						shouldSpin={shouldSpin}
           >
             <SpinnerSVG
               spinnerSize={this.spinnerSize}
               spinnerColor={this.spinnerColor}
               popDuration={this.popDuration}
               spinSpeed={this.spinSpeed}
-              spinning={status === 'refreshing' || status === 'refreshCompleted'}
+              shouldSpin={shouldSpin}
             >
               <line x1="12" y1="2" x2="12" y2="6"></line>
               <line x1="12" y1="18" x2="12" y2="22"></line>
@@ -153,20 +167,25 @@ class Pullable extends React.Component {
 const Container = styled.div.attrs({
   style: props => ({
     height: props.height,
-    transition: props.transition ? `height ${props.transitionDuration}ms ${props.transitionEase}` : 'none'
+		alignItems: props.centerSpinner ? 'center' : 'flex-start',
+    transition: props.shouldEase ? `height ${props.transitionDuration}ms ${props.transitionEase}` : 'none'
   })
 })`
   display: flex;
   overflow: hidden;
-  align-items: flex-start;
   justify-content: center;
   pointer-events: none;
 `;
 
 const Spinner = styled.div.attrs({
   style: props => ({
-    opacity: props.percentPulled,
-    transform: `translateY(${(props.percentPulled * props.spinnerSize) - props.spinnerSize}px) rotate(${props.percentPulled * 90}deg)`
+    opacity: props.fadeSpinner ? props.pctPulled : 1,
+    transform: props.shouldEase
+			? `translateY(${(props.pctPulled * (props.spinnerSize + props.spinnerOffset)) - props.spinnerSize}px) rotate(${props.rotateSpinner && props.shouldSpin ? 90 : 0}deg)`
+			: `translateY(${(props.pctPulled * (props.spinnerSize + props.spinnerOffset)) - props.spinnerSize}px) rotate(${props.rotateSpinner ? props.pctPulled * 90 : 0}deg)`,
+		transition: props.shouldEase
+			? `opacity ${props.transitionDuration}ms ${props.transitionEase}, transform ${props.transitionDuration}ms ${props.transitionEase}`
+			: 'none'
   })
 })`
   transform-origin: center;
@@ -182,7 +201,9 @@ const SpinnerSVG = styled.svg.attrs({
     width: props.spinnerSize,
     height: props.spinnerSize,
     stroke: props.spinnerColor,
-    animation: props.spinning ? `${scale} ${props.popDuration}ms cubic-bezier(0.55, 0.055, 0.675, 0.19), ${rotate360} ${props.spinSpeed}ms linear ${props.popDuration}ms infinite` : 'none'
+    animation: props.shouldSpin
+      ? `${scale} ${props.popDuration}ms cubic-bezier(0.55, 0.055, 0.675, 0.19), ${rotate360} ${props.spinSpeed}ms linear ${props.popDuration}ms infinite`
+      : 'none'
   })
 })``;
 

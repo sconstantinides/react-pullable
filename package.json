@@ -1,7 +1,7 @@
 {
   "name": "react-pullable",
-  "version": "1.0.0",
-  "description": "A customizable react component for pull to refresh support on touch devices.",
+  "version": "1.0.1",
+  "description": "Simple, customizable pull to refresh.",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
@@ -11,7 +11,9 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component"
+    "build": "nwb build-react-component",
+    "clean": "nwb clean-module && nwb clean-demo",
+    "start": "nwb serve-react-demo"
   },
   "dependencies": {
     "styled-components": "^3.2.6"
