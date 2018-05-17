@@ -2,7 +2,7 @@
 
 A customizable react component for pull to refresh on touch devices.
 
-<!-- [View the demo]() -->
+[View the demo](https://sconstantinides.github.io/react-pullable/) (for touch devices)
 
 ## Usage
 

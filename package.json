@@ -13,7 +13,8 @@
   "scripts": {
     "build": "nwb build-react-component",
     "clean": "nwb clean-module && nwb clean-demo",
-    "start": "nwb serve-react-demo"
+    "start": "nwb serve-react-demo",
+    "deploy": "gh-pages -d demo/dist"
   },
   "dependencies": {
     "styled-components": "^3.2.6"
@@ -22,6 +23,7 @@
     "react": "16.x"
   },
   "devDependencies": {
+    "gh-pages": "^1.1.0",
     "nwb": "0.21.x",
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
