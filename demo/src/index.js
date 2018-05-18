@@ -15,10 +15,10 @@ class Demo extends React.Component {
 	];
 
   captions = [
-    "Pull the cards down and get another! Works on touch devices.",
-    "Whoa! See how easy that was?",
+    "Pull the cards down and get another! Works on touch devices & emulators.",
+    "Whoa! Pretty cool, huh?",
     "Hot damn, that’s a cute animal.",
-    "I don’t know about you but I could do this all day."
+    "I don’t know about you but I could do this all day..."
   ];
 
 	constructor(props) {

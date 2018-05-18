@@ -1,6 +1,6 @@
 # 🙋 React Pullable
 
-A customizable react component for pull to refresh on touch devices.
+Simple, customizable React component for pull to refresh on touch devices.
 
 [View the demo](https://sconstantinides.github.io/react-pullable/)
 
@@ -36,22 +36,39 @@ To prevent Chrome overscroll set `overscroll-behavior-y: contain [or] none;` on 
 | distThreshold | Number | `spinnerSize * 3` | Distance where refresh is triggered |
 | resistance | Number | `2.5` | How hard it is to pull down |
 | refreshDuration | Number | `1000` | Time spent spinning before resetting (in ms) |
-| transitionDuration | Number | `400` | Time to reset (in ms) |
-| transitionEase | String | `cubic-bezier(0.215, 0.61, 0.355, 1)` | Ease when resetting |
+| resetDuration | Number | `400` | Time to reset (in ms) |
+| resetEase | String | `cubic-bezier(0.215, 0.61, 0.355, 1)` | Ease when resetting |
 | shouldPullToRefresh | Function | `() => window.scrollY <= 0` | When to allow pulling |
 | disabled | Boolean | | Disables all functionality |
 
-## Example
+## Examples
+
+Using only the required onRefresh prop:
 
 ```jsx
-<Pullable onRefresh={this.getNewData}>
-  {this.state.cards.map(card => <CardComponent data={card}/>)}
+<Pullable onRefresh={() => this.getData()}>
+  {this.state.cards.map(card => <Card data={card}/>)}
 </Pullable>
 ```
 
+Using some optional props:
+
+```jsx
+<Pullable
+  onRefresh={() => this.getTasks(currentUser)}
+  centerSpinner={false}
+  spinnerColor="#FFFFFF"
+  disabled={!currentUser}
+>
+  {this.state.tasks.map(task => <Task data={task}/>)}
+</Pullable>
+```        
+
 ## Credits
 
-Inspired by [BoxFactura's PulltoRefresh.js](https://www.boxfactura.com/pulltorefresh.js/)
+Inspired by [BoxFactura’s PulltoRefresh.js](https://www.boxfactura.com/pulltorefresh.js/)
+
+Spinner SVG from [Feather Icons](https://feather.netlify.com/)
 
 Built using [NWB](https://github.com/insin/nwb/blob/master/docs/guides/ReactComponents.md#developing-react-components-and-libraries-with-nwb)
 

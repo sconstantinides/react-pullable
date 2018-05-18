@@ -17,8 +17,8 @@ class Pullable extends React.Component {
     this.distThreshold = props.distThreshold || this.spinnerSize * 3;
     this.resistance = props.resistance || 2.5;
     this.refreshDuration = props.refreshDuration || 1000;
-    this.transitionDuration = props.transitionDuration || 400;
-    this.transitionEase = props.transitionEase || 'cubic-bezier(0.215, 0.61, 0.355, 1)';
+    this.resetDuration = props.resetDuration || 400;
+    this.resetEase = props.resetEase || 'cubic-bezier(0.215, 0.61, 0.355, 1)';
     this.shouldPullToRefresh = props.shouldPullToRefresh ? props.shouldPullToRefresh : () => window.scrollY <= 0;
 
     this.clearTouchStatus();
@@ -85,7 +85,7 @@ class Pullable extends React.Component {
     if (this.state.status === 'pulling') {
       this.ignoreTouches = true;
       this.setState({ status: 'pullAborted', height: 0 }, () => {
-        this.reset(this.transitionDuration);
+        this.reset(this.resetDuration);
       });
     } else {
       this.reset();
@@ -99,7 +99,7 @@ class Pullable extends React.Component {
 
       this.refreshCompletedTimeout = setTimeout(() => {
         this.setState({ status: 'refreshCompleted', height: 0 }, () => {
-          this.reset(this.transitionDuration);
+          this.reset(this.resetDuration);
         });
       }, this.refreshDuration);
     });
@@ -114,8 +114,8 @@ class Pullable extends React.Component {
 
   render() {
     const status = this.state.status;
-		const shouldEase = status === 'pullAborted' || status === 'refreshCompleted';
 		const shouldSpin = status === 'refreshing' || status === 'refreshCompleted';
+    const shouldReset = status === 'pullAborted' || status === 'refreshCompleted';
 		const pctPulled = this.state.height / this.distThreshold;
 
     return (
@@ -124,9 +124,9 @@ class Pullable extends React.Component {
           className={this.className}
           height={this.state.height}
 					centerSpinner={this.centerSpinner}
-          transitionDuration={this.transitionDuration}
-          transitionEase={this.transitionEase}
-          shouldEase={shouldEase}
+          resetDuration={this.resetDuration}
+          resetEase={this.resetEase}
+          shouldReset={shouldReset}
         >
           <Spinner
             pctPulled={pctPulled}
@@ -134,9 +134,9 @@ class Pullable extends React.Component {
 						rotateSpinner={this.rotateSpinner}
             spinnerSize={this.spinnerSize}
             spinnerOffset={this.spinnerOffset}
-          	transitionDuration={this.transitionDuration}
-          	transitionEase={this.transitionEase}
-						shouldEase={shouldEase}
+          	resetDuration={this.resetDuration}
+          	resetEase={this.resetEase}
+						shouldReset={shouldReset}
 						shouldSpin={shouldSpin}
           >
             <SpinnerSVG
@@ -168,7 +168,7 @@ const Container = styled.div.attrs({
   style: props => ({
     height: props.height,
 		alignItems: props.centerSpinner ? 'center' : 'flex-start',
-    transition: props.shouldEase ? `height ${props.transitionDuration}ms ${props.transitionEase}` : 'none'
+    transition: props.shouldReset ? `height ${props.resetDuration}ms ${props.resetEase}` : 'none'
   })
 })`
   display: flex;
@@ -180,11 +180,11 @@ const Container = styled.div.attrs({
 const Spinner = styled.div.attrs({
   style: props => ({
     opacity: props.fadeSpinner ? props.pctPulled : 1,
-    transform: props.shouldEase
+    transform: props.shouldReset
 			? `translateY(${(props.pctPulled * (props.spinnerSize + props.spinnerOffset)) - props.spinnerSize}px) rotate(${props.rotateSpinner && props.shouldSpin ? 90 : 0}deg)`
 			: `translateY(${(props.pctPulled * (props.spinnerSize + props.spinnerOffset)) - props.spinnerSize}px) rotate(${props.rotateSpinner ? props.pctPulled * 90 : 0}deg)`,
-		transition: props.shouldEase
-			? `opacity ${props.transitionDuration}ms ${props.transitionEase}, transform ${props.transitionDuration}ms ${props.transitionEase}`
+		transition: props.shouldReset
+			? `opacity ${props.resetDuration}ms ${props.resetEase}, transform ${props.resetDuration}ms ${props.resetEase}`
 			: 'none'
   })
 })`
