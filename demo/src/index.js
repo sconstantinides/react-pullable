@@ -50,7 +50,7 @@ class Demo extends React.Component {
 					cards: cards
 				};
 			});
-		}, 800); // Pretend to actually fetch data
+		}, 1000); // Pretend to actually fetch data
 	};
 
   render() {
