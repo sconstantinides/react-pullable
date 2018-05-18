@@ -2,7 +2,9 @@
 
 Simple, customizable React component for pull to refresh on touch devices.
 
-[View the demo](https://sconstantinides.github.io/react-pullable/)
+[Play with the demo](https://sconstantinides.github.io/react-pullable/)
+
+![GIF](screencap.gif)
 
 ## Usage
 
