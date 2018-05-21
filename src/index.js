@@ -6,9 +6,9 @@ class Pullable extends React.Component {
     super(props);
 
     this.className = props.className || 'pullable';
-		this.centerSpinner = props.centerSpinner === false ? false : true;
-		this.fadeSpinner = props.fadeSpinner === false ? false : true;
-		this.rotateSpinner = props.rotateSpinner === false ? false : true;
+		this.centerSpinner = props.centerSpinner !== false;
+		this.fadeSpinner = props.fadeSpinner !== false;
+		this.rotateSpinner = props.rotateSpinner !== false;
     this.spinnerSize = props.spinnerSize || 24;
 		this.spinnerOffset = props.spinnerOffset || 0;
     this.spinnerColor = props.spinnerColor || '#000000';
