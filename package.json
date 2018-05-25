@@ -1,6 +1,6 @@
 {
   "name": "react-pullable",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple, customizable pull to refresh.",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -17,6 +17,7 @@
     "deploy": "gh-pages -d demo/dist"
   },
   "dependencies": {
+    "prop-types": "^15.6.1",
     "styled-components": "^3.2.6"
   },
   "peerDependencies": {

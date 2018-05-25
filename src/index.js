@@ -1,25 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 
 class Pullable extends React.Component {
   constructor(props) {
     super(props);
-
-    this.className = props.className || 'pullable';
-		this.centerSpinner = props.centerSpinner !== false;
-		this.fadeSpinner = props.fadeSpinner !== false;
-		this.rotateSpinner = props.rotateSpinner !== false;
-    this.spinnerSize = props.spinnerSize || 24;
-		this.spinnerOffset = props.spinnerOffset || 0;
-    this.spinnerColor = props.spinnerColor || '#000000';
-    this.spinSpeed = props.spinSpeed || 1200;
-    this.popDuration = props.popDuration || 200;
-    this.distThreshold = props.distThreshold || this.spinnerSize * 3;
-    this.resistance = props.resistance || 2.5;
-    this.refreshDuration = props.refreshDuration || 1000;
-    this.resetDuration = props.resetDuration || 400;
-    this.resetEase = props.resetEase || 'cubic-bezier(0.215, 0.61, 0.355, 1)';
-    this.shouldPullToRefresh = props.shouldPullToRefresh ? props.shouldPullToRefresh : () => window.scrollY <= 0;
 
     this.clearTouchStatus();
 
@@ -55,7 +40,7 @@ class Pullable extends React.Component {
   onTouchStart = (e) => {
     if (this.props.disabled || this.ignoreTouches) return;
 
-    if (this.state.status === 'ready' && this.shouldPullToRefresh()) {
+    if (this.state.status === 'ready' && this.props.shouldPullToRefresh()) {
       this.pullStartY = e.touches[0].screenY;
     } else {
       this.pullStartY = null;
@@ -71,10 +56,10 @@ class Pullable extends React.Component {
     if (this.dist > 0) {
       e.preventDefault();
 
-      this.distResisted = Math.min(this.dist / this.resistance, this.distThreshold);
+      this.distResisted = Math.min(this.dist / this.props.resistance, this.props.distThreshold);
 
       this.setState({ status: 'pulling', height: this.distResisted }, () => {
-        if (this.distResisted === this.distThreshold) this.refresh();
+        if (this.distResisted === this.props.distThreshold) this.refresh();
       });
     }
   };
@@ -85,7 +70,7 @@ class Pullable extends React.Component {
     if (this.state.status === 'pulling') {
       this.ignoreTouches = true;
       this.setState({ status: 'pullAborted', height: 0 }, () => {
-        this.reset(this.resetDuration);
+        this.reset(this.props.resetDuration);
       });
     } else {
       this.reset();
@@ -99,9 +84,9 @@ class Pullable extends React.Component {
 
       this.refreshCompletedTimeout = setTimeout(() => {
         this.setState({ status: 'refreshCompleted', height: 0 }, () => {
-          this.reset(this.resetDuration);
+          this.reset(this.props.resetDuration);
         });
-      }, this.refreshDuration);
+      }, this.props.refreshDuration);
     });
   };
 
@@ -116,34 +101,34 @@ class Pullable extends React.Component {
     const status = this.state.status;
 		const shouldSpin = status === 'refreshing' || status === 'refreshCompleted';
     const shouldReset = status === 'pullAborted' || status === 'refreshCompleted';
-		const pctPulled = this.state.height / this.distThreshold;
+		const pctPulled = this.state.height / this.props.distThreshold;
 
     return (
       <React.Fragment>
         <Container
-          className={this.className}
+          className={this.props.className}
           height={this.state.height}
-					centerSpinner={this.centerSpinner}
-          resetDuration={this.resetDuration}
-          resetEase={this.resetEase}
+					centerSpinner={this.props.centerSpinner}
+          resetDuration={this.props.resetDuration}
+          resetEase={this.props.resetEase}
           shouldReset={shouldReset}
         >
           <Spinner
             pctPulled={pctPulled}
-						fadeSpinner={this.fadeSpinner}
-						rotateSpinner={this.rotateSpinner}
-            spinnerSize={this.spinnerSize}
-            spinnerOffset={this.spinnerOffset}
-          	resetDuration={this.resetDuration}
-          	resetEase={this.resetEase}
+						fadeSpinner={this.props.fadeSpinner}
+						rotateSpinner={this.props.rotateSpinner}
+            spinnerSize={this.props.spinnerSize}
+            spinnerOffset={this.props.spinnerOffset}
+          	resetDuration={this.props.resetDuration}
+          	resetEase={this.props.resetEase}
 						shouldReset={shouldReset}
 						shouldSpin={shouldSpin}
           >
             <SpinnerSVG
-              spinnerSize={this.spinnerSize}
-              spinnerColor={this.spinnerColor}
-              popDuration={this.popDuration}
-              spinSpeed={this.spinSpeed}
+              spinnerSize={this.props.spinnerSize}
+              spinnerColor={this.props.spinnerColor}
+              popDuration={this.props.popDuration}
+              spinSpeed={this.props.spinSpeed}
               shouldSpin={shouldSpin}
             >
               <line x1="12" y1="2" x2="12" y2="6"></line>
@@ -157,12 +142,52 @@ class Pullable extends React.Component {
             </SpinnerSVG>
           </Spinner>
         </Container>
-
         {this.props.children}
       </React.Fragment>
     );
   }
 }
+
+Pullable.defaultProps = {
+  className: 'pullable',
+  centerSpinner: true,
+  fadeSpinner: true,
+  rotateSpinner: true,
+  spinnerSize: 24,
+  spinnerOffset: 0,
+  spinnerColor: '#000000',
+  spinSpeed: 1200,
+  popDuration: 200,
+  distThreshold: 72,
+  resistance: 2.5,
+  refreshDuration: 1000,
+  resetDuration: 400,
+  resetEase: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+  shouldPullToRefresh: () => window.scrollY <= 0,
+  disabled: false
+};
+
+Pullable.propTypes = {
+  onRefresh: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  centerSpinner: PropTypes.bool,
+  fadeSpinner: PropTypes.bool,
+  rotateSpinner: PropTypes.bool,
+  spinnerSize: PropTypes.number,
+  spinnerOffset: PropTypes.number,
+  spinnerColor: PropTypes.string,
+  spinSpeed: PropTypes.number,
+  popDuration: PropTypes.number,
+  distThreshold: PropTypes.number,
+  resistance: PropTypes.number,
+  refreshDuration: PropTypes.number,
+  resetDuration: PropTypes.number,
+  resetEase: PropTypes.string,
+  shouldPullToRefresh: PropTypes.func,
+  disabled: PropTypes.bool
+};
+
+// Styled Components
 
 const Container = styled.div.attrs({
   style: props => ({
