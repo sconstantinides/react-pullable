@@ -43,10 +43,14 @@ class PreloadImage extends React.Component {
 
   componentWillUnmount() {
     if (this.observer) this.observer.disconnect();
-    this.preloader.onload = null;
+    if (this.preloader) this.preloader.onload = null;
   }
 
   render() {
+    const backgroundSize = this.props.innerStyle && this.props.innerStyle.backgroundSize ? this.props.innerStyle.backgroundSize : "cover";
+    const backgroundPosition = this.props.innerStyle && this.props.innerStyle.backgroundPosition ? this.props.innerStyle.backgroundPosition : "center";
+    const backgroundRepeat = this.props.innerStyle && this.props.innerStyle.backgroundRepeat ? this.props.innerStyle.backgroundRepeat : "no-repeat";
+
     return (
       <div
         // Required: Relative, absolute, or fixed position
@@ -63,12 +67,13 @@ class PreloadImage extends React.Component {
           bottom: 0,
           left: 0,
           backgroundImage: this.state.src,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          backgroundSize: backgroundSize,
+          backgroundPosition: backgroundPosition,
+          backgroundRepeat: backgroundRepeat,
           transition: `opacity ${this.props.duration || '300ms'} ${this.props.ease || 'cubic-bezier(0.215, 0.61, 0.355, 1)'}`,
           opacity: this.state.loaded ? 1 : 0
         }}></div>
+        {this.props.children}
       </div>
     );
   }
