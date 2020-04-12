@@ -1,6 +1,6 @@
 {
   "name": "react-pullable",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Simple, customizable pull to refresh.",
   "main": "lib/index.js",
   "module": "es/index.js",
