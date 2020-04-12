@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "gh-pages": "^1.1.0",
-    "nwb": "0.21.x",
+    "nwb": "^0.21.5",
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
   },
