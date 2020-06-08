@@ -8,6 +8,8 @@ class Pullable extends React.Component {
 
     this.clearTouchStatus();
 
+    this.componentId = `pull-div-${Date.now() + Math.floor(Math.random() * 10000)}`;
+
     this.state = {
       status: 'ready',
       height: 0
@@ -15,15 +17,17 @@ class Pullable extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('touchstart', this.onTouchStart);
-    window.addEventListener('touchmove', this.onTouchMove, { passive: false });
-    window.addEventListener('touchend', this.onTouchEnd);
+    let element = document.getElementById(this.componentId);
+    element.addEventListener('touchstart', this.onTouchStart);
+    element.addEventListener('touchmove', this.onTouchMove, { passive: false });
+    element.addEventListener('touchend', this.onTouchEnd);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('touchstart', this.onTouchStart);
-    window.removeEventListener('touchmove', this.onTouchMove, { passive: false });
-    window.removeEventListener('touchend', this.onTouchEnd);
+    let element = document.getElementById(this.componentId);
+    element.removeEventListener('touchstart', this.onTouchStart);
+    element.removeEventListener('touchmove', this.onTouchMove, { passive: false });
+    element.removeEventListener('touchend', this.onTouchEnd);
 
     clearTimeout(this.refreshCompletedTimeout);
     clearTimeout(this.resetTimeout);
@@ -142,7 +146,9 @@ class Pullable extends React.Component {
             </SpinnerSVG>
           </Spinner>
         </Container>
-        {this.props.children}
+        <div id={this.componentId}>
+          {this.props.children}
+        </div>
       </React.Fragment>
     );
   }
