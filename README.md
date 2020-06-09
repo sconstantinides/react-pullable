@@ -42,6 +42,7 @@ To prevent Chrome overscroll set `overscroll-behavior-y: contain [or] none;` on 
 | resetEase | String | `cubic-bezier(0.215, 0.61, 0.355, 1)` | Ease when resetting |
 | shouldPullToRefresh | Function | `() => window.scrollY <= 0` | When to allow pulling |
 | disabled | Boolean | | Disables all functionality |
+| targetComponent | Boolean | `false` | Enable to only handle touch events on the wrapped component, otherwise all window touch events will be handled |
 
 ## Examples
 
