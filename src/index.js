@@ -17,14 +17,14 @@ class Pullable extends React.Component {
   }
 
   componentDidMount() {
-    let element = document.getElementById(this.componentId);
+    let element = this.props.targetComponent ? document.getElementById(this.componentId) : window;
     element.addEventListener('touchstart', this.onTouchStart);
     element.addEventListener('touchmove', this.onTouchMove, { passive: false });
     element.addEventListener('touchend', this.onTouchEnd);
   }
 
   componentWillUnmount() {
-    let element = document.getElementById(this.componentId);
+    let element = this.props.targetComponent ? document.getElementById(this.componentId) : window;
     element.removeEventListener('touchstart', this.onTouchStart);
     element.removeEventListener('touchmove', this.onTouchMove, { passive: false });
     element.removeEventListener('touchend', this.onTouchEnd);
