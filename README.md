@@ -36,6 +36,7 @@ To prevent Chrome overscroll set `overscroll-behavior-y: contain [or] none;` on 
 | spinSpeed | Number | `1200` | Time to rotate the spinner 360° (in ms) |
 | popDuration | Number | `200` | Time to expand the spinner before it rotates (`0` = skip pop) |
 | distThreshold | Number | `spinnerSize * 3` | Distance where refresh is triggered |
+| pullDownThreshold | Number | `150` | Distance from top to enable pull to refresh |
 | resistance | Number | `2.5` | How hard it is to pull down |
 | refreshDuration | Number | `1000` | Time spent spinning before resetting (in ms) |
 | resetDuration | Number | `400` | Time to reset (in ms) |
