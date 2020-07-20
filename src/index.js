@@ -39,6 +39,7 @@ class Pullable extends React.Component {
 
   onTouchStart = (e) => {
     if (this.props.disabled || this.ignoreTouches) return;
+    if (e.touches[0].clientY > this.props.pullDownThreshold) return;
 
     if (this.state.status === 'ready' && this.props.shouldPullToRefresh()) {
       this.pullStartY = e.touches[0].screenY;
@@ -159,6 +160,7 @@ Pullable.defaultProps = {
   spinSpeed: 1200,
   popDuration: 200,
   distThreshold: 72,
+  pullDownThreshold: 150,
   resistance: 2.5,
   refreshDuration: 1000,
   resetDuration: 400,
