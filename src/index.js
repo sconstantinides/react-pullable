@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 class Pullable extends React.Component {
   constructor(props) {
@@ -10,7 +10,7 @@ class Pullable extends React.Component {
 
     this.state = {
       status: 'ready',
-      height: 0
+      height: 0,
     };
   }
 
@@ -102,7 +102,7 @@ class Pullable extends React.Component {
 		const shouldSpin = status === 'refreshing' || status === 'refreshCompleted';
     const shouldReset = status === 'pullAborted' || status === 'refreshCompleted';
 		const pctPulled = this.state.height / this.props.distThreshold;
-
+      
     return (
       <React.Fragment>
         <Container
@@ -125,6 +125,11 @@ class Pullable extends React.Component {
 						shouldSpin={shouldSpin}
           >
             <SpinnerSVG
+              viewBox='0 0 24 24'
+              fill='none'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
               spinnerSize={this.props.spinnerSize}
               spinnerColor={this.props.spinnerColor}
               popDuration={this.props.popDuration}
@@ -189,48 +194,26 @@ Pullable.propTypes = {
 
 // Styled Components
 
-const Container = styled.div.attrs({
-  style: props => ({
-    height: props.height,
-		alignItems: props.centerSpinner ? 'center' : 'flex-start',
-    transition: props.shouldReset ? `height ${props.resetDuration}ms ${props.resetEase}` : 'none'
-  })
-})`
+const Container = styled.div`
+  align-items: ${props => props.centerSpinner ? 'center' : 'flex-start'};
+  height: ${props => props.height}px;
+  transition: ${props => props.shouldReset ? `height ${props.resetDuration}ms ${props.resetEase}` : 'none'};
   display: flex;
   overflow: hidden;
   justify-content: center;
   pointer-events: none;
-`;
+`
 
-const Spinner = styled.div.attrs({
-  style: props => ({
-    opacity: props.fadeSpinner ? props.pctPulled : 1,
-    transform: props.shouldReset
-			? `translateY(${(props.pctPulled * (props.spinnerSize + props.spinnerOffset)) - props.spinnerSize}px) rotate(${props.rotateSpinner && props.shouldSpin ? 90 : 0}deg)`
-			: `translateY(${(props.pctPulled * (props.spinnerSize + props.spinnerOffset)) - props.spinnerSize}px) rotate(${props.rotateSpinner ? props.pctPulled * 90 : 0}deg)`,
-		transition: props.shouldReset
-			? `opacity ${props.resetDuration}ms ${props.resetEase}, transform ${props.resetDuration}ms ${props.resetEase}`
-			: 'none'
-  })
-})`
+const Spinner = styled.div`
+  opacity: ${props => props.fadeSpinner ? props.pctPulled : 1};
+  transform: ${props => props.shouldReset
+    ? `translateY(${(props.pctPulled * (props.spinnerSize + props.spinnerOffset)) - props.spinnerSize}px) rotate(${props.rotateSpinner && props.shouldSpin ? 90 : 0}deg)`
+    : `translateY(${(props.pctPulled * (props.spinnerSize + props.spinnerOffset)) - props.spinnerSize}px) rotate(${props.rotateSpinner ? props.pctPulled * 90 : 0}deg)`};
+  transition: ${props => props.shouldReset
+    ? `opacity ${props.resetDuration}ms ${props.resetEase}, transform ${props.resetDuration}ms ${props.resetEase}`
+    : 'none'};
   transform-origin: center;
-`;
-
-const SpinnerSVG = styled.svg.attrs({
-  viewBox: '0 0 24 24',
-  fill: 'none',
-  strokeWidth: '2',
-  strokeLinecap: 'round',
-  strokeLinejoin: 'round',
-  style: props => ({
-    width: props.spinnerSize,
-    height: props.spinnerSize,
-    stroke: props.spinnerColor,
-    animation: props.shouldSpin
-      ? `${scale} ${props.popDuration}ms cubic-bezier(0.55, 0.055, 0.675, 0.19), ${rotate360} ${props.spinSpeed}ms linear ${props.popDuration}ms infinite`
-      : 'none'
-  })
-})``;
+`
 
 const scale = keyframes`
   0% { transform: scale(1.3); }
@@ -241,5 +224,20 @@ const rotate360 = keyframes`
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 `;
+
+const animation = css`
+  ${props => props.shouldSpin
+    ? css`${scale} ${props.popDuration}ms cubic-bezier(0.55, 0.055, 0.675, 0.19), ${rotate360} ${props.spinSpeed}ms linear ${props.popDuration}ms infinite`
+    : 'none'};
+`
+
+const SpinnerSVG = styled.svg`
+    viewBox: 0;
+    width: ${props => props.spinnerSize}px;
+    height: ${props => props.spinnerSize}px;
+    stroke: ${props => props.spinnerColor};
+    animation: ${animation};
+`
+
 
 export default Pullable;
