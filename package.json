@@ -17,17 +17,17 @@
     "deploy": "gh-pages -d demo/dist"
   },
   "dependencies": {
-    "prop-types": "^15.6.1",
-    "styled-components": "^3.2.6"
+    "prop-types": "^15.7.2",
+    "styled-components": "^5.2.1"
   },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
     "gh-pages": "^1.1.0",
-    "nwb": "^0.21.5",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "nwb": "^0.25.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "author": "Stelios Constantinides <sconstantinides@gmail.com>",
   "license": "MIT",
